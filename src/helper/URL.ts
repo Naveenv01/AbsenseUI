@@ -1,0 +1,1 @@
+export const getLeaveUrl='https://script.google.com/macros/s/AKfycbyTAt-iSwYk6C0Kl3XuROEICtHn8VOrrXKM36-q0-HxIS85rOKsHBKNBHpu58sKhCGnlg/exec?path=getLeaveData&empId=135'

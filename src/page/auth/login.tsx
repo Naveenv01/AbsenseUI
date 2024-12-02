@@ -1,130 +1,105 @@
-import { useNavigate } from "react-router-dom";
-import appUrl from "../../helper/string";
-import { useState } from "react";
-import { useAuth } from "../../provider/authProvider";
+import React, { useState } from 'react'
+import { User, Lock } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/Card'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../provider/authProvider'
 
-export default function Login() {
+export default function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-    const { setToken } = useAuth();
+  const nav = useNavigate();
+  const { setToken } = useAuth();
 
-    const [userEmail, setUserEmail] = useState("");
-    const [password, setPassword] = useState("");
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setError('')
 
-    const nav = useNavigate();
-
-    async function handleSubmit(event: any) {
-        event.preventDefault();
-        console.log(event);
-        const loginData = {
-            identity: userEmail,
-            password: password,
-        };
-
-        try {
-            const response = await fetch(appUrl.loginUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(loginData),
-            });
-
-            const responseBody: any = await response.json();
-            console.log(responseBody);
-
-            if (response.ok) {
-                console.log('Sucess')
-                setToken("this is a test token");
-
-
-                nav("/dashboard", { replace: true });
-
-
-                // API call succeeded, handle successful login// Redirect to the dashboard
-            } else {
-                // API call failed, handle login failure
-                console.log("Login failed");
-            }
-        } catch (error) {
-            // Handle network or other errors
-            console.error("An error occurred:", error);
-        }
+    if (!email || !password) {
+      setError('Please fill in all fields')
+      return
     }
 
-    return (
-        <>
-            <div
-                className="flex min-h-full flex-1 flex-row px-20 py-20 lg:px-8 border rounded-xl border-gray-200 bg-black bg-opacity-70 backdrop-blur-sm"
-            >
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm m-auto p-5">
-                    <h2 className=" text-left text-2xl font-bold leading-9 tracking-tight">
-                        Sign in to your account
-                    </h2>
+    // Here you would typically handle the login logic
+    console.log('Login attempt with:', { email, password })
+    // For demo purposes, let's just show a success message
+
+    setToken("this is a test token");
+
+    nav("/dashboard", { replace: true });
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>
+            <h2 className="text-center text-3xl text-gray-900">Sign in to your account</h2>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </div>
-
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" onSubmit={handleSubmit} method="POST">
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 ">
-                                Email address
-                            </label>
-                            <div className="mt-2">
-                                <input
-                                    onChange={(e) => setUserEmail(e.target.value)}
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-black "
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <div className="flex items-center justify-between">
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 ">
-                                    Password
-                                </label>
-                                <div className="text-sm">
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                        Forgot password?
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="mt-2">
-                                <input
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-black sm:text-sm sm:leading-6"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            >
-                                Sign in
-                            </button>
-                        </div>
-                    </form>
-
-                    <p className="mt-10 text-center text-sm text-gray-500">
-                        Not a member?{' '}
-                        <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                            SignUp
-                        </a>
-                    </p>
-                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md text-gray-700"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
 
-        </>
-    )
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text text-gray-700">
+                Password
+              </label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md text-gray-700"
+                  placeholder="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {error && (
+              <div className="text-red-600 text-sm">{error}</div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 

@@ -6,5 +6,5 @@ export const theme = {
   extend: {},
 };
 export const plugins = [
-  require('@tailwindcss/forms')
+  import('@tailwindcss/forms').then(module => module.default)
 ];

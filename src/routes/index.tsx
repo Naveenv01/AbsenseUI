@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./protectedRoutes";
 import Logout from "../page/auth/logout";
 import Login from "../page/auth/login";
 import Dashboard from "../page/dashboard";
+import LeaveDashboard from "../page/dashboard";
 
 
 const Routes = () => {
@@ -33,7 +34,7 @@ const Routes = () => {
                 // },
                 {
                     path: "/dashboard",
-                    element: <Dashboard />,
+                    element: <LeaveDashboard />,
                 },
                 {
                     path: "/logout",
