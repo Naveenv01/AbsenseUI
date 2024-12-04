@@ -3,6 +3,7 @@ import { CalendarDays, Clock, User, FileText, Calendar } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent } from '../components/Card';
 import { getLeaveUrl } from '../helper/URL';
 import { LeaveApplicationModal } from '../components/LeaveCompoent';
+import Logout from './auth/logout';
 
 
 // TypeScript interface for LeaveData
@@ -112,6 +113,9 @@ export default function LeaveDashboard() {
                 <a href="#" className="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   Leave History
                 </a>
+               <div>
+                <Logout/>
+               </div>
               </div>
             </div>
           </div>

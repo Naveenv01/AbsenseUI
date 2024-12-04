@@ -1,105 +1,123 @@
-import React, { useState } from 'react'
-import { User, Lock } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '../../components/Card'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../provider/authProvider'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import logo from './../../assets/c1x-logo.png';
+import { useAuth } from './../../provider/authProvider';
 
-export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
 
+interface LoginProps {
+  login: (userData: any) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ login }) => {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
   const { setToken } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
 
-    if (!email || !password) {
-      setError('Please fill in all fields')
-      return
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://script.google.com/macros/s/AKfycbxpNMBUfGy6SlCNcjFpoJ1mXo3rVAm60i0-ULd4HOksjGXQr7ykV2mWtJ2-naa40ZeB0A/exec?path=login&email=${email}&password=${password}`
+      );
+
+      if (response.data.success) {
+        setToken("token");
+        nav(
+          response.data.type === 'admin' ? '/admin-dashboard' : '/dashboard'
+        );
+      } else {
+        setError('Invalid credentials');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    // Here you would typically handle the login logic
-    console.log('Login attempt with:', { email, password })
-    // For demo purposes, let's just show a success message
-
-    setToken("this is a test token");
-
-    nav("/dashboard", { replace: true });
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>
-            <h2 className="text-center text-3xl text-gray-900">Sign in to your account</h2>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md text-gray-700"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-            </div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-md">
+        <div className="flex flex-col items-center">
+          <img
+            src={logo}
+            alt="C1X Logo"
+            className="w-24 h-24 mb-4 object-contain"
+          />
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            C1X Leave Management System
+          </h2>
+        </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                </div>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md text-gray-700"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
+        <form onSubmit={handleLogin} className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+            />
+          </div>
 
-            {error && (
-              <div className="text-red-600 text-sm">{error}</div>
-            )}
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-black"
+            />
+          </div>
 
-            <div>
-              <button
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign in
-              </button>
+          {error && (
+            <div className="text-red-500 text-sm text-center">
+              {error}
             </div>
-          </form>
-        </CardContent>
-      </Card>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
-  )
-}
+  );
+};
 
+export default Login;

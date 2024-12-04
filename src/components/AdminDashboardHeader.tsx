@@ -1,5 +1,6 @@
 import React from 'react'
 import { format } from 'date-fns'
+import Logout from '../page/auth/logout'
 
 interface DashboardHeaderProps {
   dateRange: [Date, Date]
@@ -23,12 +24,7 @@ export default function DashboardHeader({ dateRange, setDateRange }: DashboardHe
             onChange={(e) => setDateRange([dateRange[0], new Date(e.target.value)])}
             className="border rounded p-2 bg-white text-gray-900"
           />
-          <button
-            onClick={() => {/* Implement logout functionality */}}
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-          >
-            Logout
-          </button>
+         <Logout/>
         </div>
       </div>
     )

@@ -4,7 +4,6 @@ import { ProtectedRoute } from "./protectedRoutes";
 import Logout from "../page/auth/logout";
 import Login from "../page/auth/login";
 import Dashboard from "../page/dashboard";
-import LeaveDashboard from "../page/dashboard";
 import AdminDashboard from "../page/AdminDashboard";
 
 
@@ -34,8 +33,12 @@ const Routes = () => {
                 //     element: <div>User Home Page</div>,
                 // },
                 {
-                    path: "/dashboard",
+                    path: "/admin-dashboard",
                     element: <AdminDashboard />,
+                },
+                {
+                    path: "/dashboard",
+                    element: <Dashboard />,
                 },
                 {
                     path: "/logout",
