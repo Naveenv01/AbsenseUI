@@ -5,6 +5,7 @@ import Logout from "../page/auth/logout";
 import Login from "../page/auth/login";
 import Dashboard from "../page/dashboard";
 import LeaveDashboard from "../page/dashboard";
+import AdminDashboard from "../page/AdminDashboard";
 
 
 const Routes = () => {
@@ -34,7 +35,7 @@ const Routes = () => {
                 // },
                 {
                     path: "/dashboard",
-                    element: <LeaveDashboard />,
+                    element: <AdminDashboard />,
                 },
                 {
                     path: "/logout",

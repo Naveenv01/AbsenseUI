@@ -3,7 +3,11 @@ export const content = [
   "./src/**/*.{js,jsx,ts,tsx}",
 ];
 export const theme = {
-  extend: {},
+  extend: {
+    fontFamily: {
+      sans: ['Inter', 'sans-serif'],
+    },
+  },
 };
 export const plugins = [
   import('@tailwindcss/forms').then(module => module.default)
