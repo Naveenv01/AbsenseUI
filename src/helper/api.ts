@@ -5,14 +5,25 @@ import { LeaveData, UserData } from '../models/LeaveData'
 const API_URL = 'https://script.google.com/macros/s/AKfycbxpNMBUfGy6SlCNcjFpoJ1mXo3rVAm60i0-ULd4HOksjGXQr7ykV2mWtJ2-naa40ZeB0A/exec'
 
 export async function fetchDashboardData(startDate: Date, endDate: Date): Promise<LeaveData> {
-  const response = await axios.get(API_URL, {
-    params: {
-      path: 'getUser',
-      start_date: startDate.toISOString().split('T')[0],
-      end_date: endDate.toISOString().split('T')[0],
-    },
-  })
-  return response.data
+  try {
+    const response = await axios.get(
+      `https://script.google.com/macros/s/AKfycbxpNMBUfGy6SlCNcjFpoJ1mXo3rVAm60i0-ULd4HOksjGXQr7ykV2mWtJ2-naa40ZeB0A/exec`,
+      {
+        params: {
+          path: "getUser",
+          start_date: startDate.toISOString().split("T")[0],
+          end_date: endDate.toISOString().split("T")[0],
+        },
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    return response.data
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error)
+    throw new Error('Failed to fetch dashboard data. Please try again.')
+  }
 }
 
 export async function fetchUserDetails(empId: string, startDate: Date, endDate: Date): Promise<{ leaves: UserData[] }> {
@@ -23,6 +34,9 @@ export async function fetchUserDetails(empId: string, startDate: Date, endDate: 
       start_date: startDate.toISOString().split('T')[0],
       end_date: endDate.toISOString().split('T')[0],
     },
+    headers: {
+      'Access-Control-Allow-Origin':'*'
+    }
   })
   return response.data
 }
@@ -46,6 +60,9 @@ export async function fetchLeaveBalance(empId: string): Promise<UserData['leave'
         path: 'getLeaveBalance',
         empId,
       },
+      headers: {
+        'Access-Control-Allow-Origin':'*'
+      }
     })
     return response.data.leave
   } catch (error) {
@@ -104,3 +121,6 @@ export async function fetchHolidayList(year: number): Promise<{ date: string; na
   }
 }
 
+
+//https://script.google.com/macros/s/AKfycbxpNMBUfGy6SlCNcjFpoJ1mXo3rVAm60i0-ULd4HOksjGXQr7ykV2mWtJ2-naa40ZeB0A/exec?path=userLeave&empId=1&start_date=2024-03-31&end_date=2024-12-04
+//https://script.google.com/macros/s/AKfycbxpNMBUfGy6SlCNcjFpoJ1mXo3rVAm60i0-ULd4HOksjGXQr7ykV2mWtJ2-naa40ZeB0A/exec?path=userLeave&empId=1&start_date=2024-04-01&end_date=2024-12-04
