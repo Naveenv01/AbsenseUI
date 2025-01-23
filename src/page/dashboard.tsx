@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { CalendarDays, Clock, User, FileText, Calendar } from 'lucide-react'
-import { Card, CardHeader, CardTitle, CardContent } from '../components/Card';
 import { getLeaveUrl } from '../helper/URL';
 import { LeaveApplicationModal } from '../components/LeaveCompoent';
 import Logout from './auth/logout';
@@ -83,7 +82,7 @@ export default function LeaveDashboard() {
     );
   }
 
-  const handleApplyLeave = (leaveData: any) => {
+  const handleApplyLeave = (leaveData ) => {
     console.log('Leave application submitted:', leaveData);
     // Here you would typically send this data to your backend
     // You may want to update the leaveData state here based on the submitted leave

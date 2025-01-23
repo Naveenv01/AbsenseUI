@@ -67,6 +67,7 @@ const Routes = () => {
         ...routesForAuthenticatedOnly,
     ]);
 
+
     // Provide the router configuration using RouterProvider
     return <RouterProvider router={router} />;
 };

@@ -25,13 +25,14 @@ export default function AdminDashboard() {
   }, [dateRange])
 
   const fetchData = async () => {
+    console.log('fetch date called ')
     setLoading(true)
     setError(null)
     try {
       const result = await fetchDashboardData(dateRange[0], dateRange[1])
       setData(result)
     } catch (error) {
-      console.error('Failed to fetch data:', error)
+      console.error('Failed to fetch data: in featch date method dashboard', error)
       setError('Failed to fetch data. Please try again.')
     } finally {
       setLoading(false)

@@ -5,11 +5,9 @@ import logo from './../../assets/c1x-logo.png';
 import { useAuth } from './../../provider/authProvider';
 
 
-interface LoginProps {
-  login: (userData: any) => void;
-}
 
-const Login: React.FC<LoginProps> = ({ login }) => {
+
+const Login: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');

@@ -17,7 +17,7 @@ const leaveTypes = [
   { value: 'SL', label: 'Sick Leave' },
   { value: 'EL', label: 'Earned Leave' },
   { value: 'ML', label: 'Maternity Leave' },
-  { value: 'PL', label: 'Paternity Leave' },
+  { value: 'PL', label: 'Personal Leave' },
   { value: 'WFH', label: 'Work From Home' },
 ];
 
